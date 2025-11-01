@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fluxfeed API Docs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Fluxfeed API documentation and quickstart." />
+  <meta name="theme-color" content="#ff7a00" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' fill='%230a0a0b'/%3E%3Cpath d='M28 96 L64 24 L100 96 Z' fill='%23ff7a00'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --panel: #101218;
+      --text: #e9edf1;
+      --muted: #99a2ad;
+      --accent: #ff7a00;
+      --ok: #3ecf8e;
+      --bad: #ff5577;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; height:100%; }
+    body { background: var(--bg); color: var(--text); font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { display:flex; gap:16px; align-items:center; padding: 24px 0; }
+    .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display:inline-block; }
+    nav { margin-left:auto; display:flex; gap:18px; }
+    nav a { color: var(--text); opacity: .9; }
+    .hero { background: linear-gradient(180deg, rgba(255,122,0,0.07), transparent 50%); border:1px solid #1a1f29; padding: 28px; border-radius: 16px; }
+    h1 { font-size: 28px; margin: 0 0 8px; }
+    .muted { color: var(--muted); }
+    .grid { display:grid; gap:18px; grid-template-columns: repeat(12, 1fr); margin-top: 24px; }
+    .card { background: var(--panel); border:1px solid #1a1f29; border-radius: 16px; padding: 18px; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .kbd { font: 12px/1 var(--mono); background:#0d0f14; border:1px solid #1a1f29; padding:2px 6px; border-radius:6px; color:var(--muted); }
+    pre { margin:12px 0 0; background:#0b0e14; border:1px solid #1a1f29; border-radius: 14px; padding: 14px; overflow:auto; }
+    code { font-family: var(--mono); font-size: 13px; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap: 12px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:1px solid #1f2633; background:#0f131b; color:var(--text); cursor:pointer; }
+    .btn:hover { background:#141a25; }
+    .pill { padding:4px 10px; border-radius:999px; font-size:12px; border:1px solid #1f2633; }
+    .pill.ok { color:#0c2; background:rgba(62,207,142,.1); border-color:rgba(62,207,142,.4); }
+    .pill.bad { color:#f36; background:rgba(255,85,119,.1); border-color:rgba(255,85,119,.35); }
+    .section-title { margin: 26px 0 10px; font-size: 20px; }
+    footer { color: var(--muted); padding: 28px 0; text-align:center; }
+    .redoc-wrap { background: #090b10; border:1px solid #141924; border-radius:16px; padding: 0; overflow:hidden; }
+    iframe { width:100%; border:0; }
+    .note { font-size: 13px; color: var(--muted); }
+    @media (max-width: 900px) {
+      .span-4, .span-6, .span-8 { grid-column: 1 / -1; }
+      nav { display:none; }
+    }
+  </style>
+  <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="logo"></span>
+      <strong>Fluxfeed API</strong>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#endpoints">Endpoints</a>
+        <a href="#status">Status</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="overview">
+      <h1>Crypto news & signals API</h1>
+      <p class="muted">Fast endpoints for live crypto headlines, trending mentions, tickers and more — powering <span class="kbd">fluxfeed.news</span>.</p>
+      <div class="grid">
+        <div class="card span-4">
+          <div class="row"><strong>Base URL</strong><span class="kbd">https://api.fluxfeed.news</span></div>
+          <div class="note" style="margin-top:8px">Public endpoints. No auth required (rate-limited).</div>
+        </div>
+        <div class="card span-4">
+          <div class="row"><strong>Spec</strong><a class="kbd" href="https://api.fluxfeed.news/openapi.json" target="_blank" rel="noopener">openapi.json</a></div>
+          <div class="note" style="margin-top:8px">This page renders the spec below via Redoc.</div>
+        </div>
+        <div class="card span-4" id="status">
+          <div class="row"><strong>Status</strong><span id="health-pill" class="pill">Checking…</span></div>
+          <div class="note" id="health-time" style="margin-top:8px">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart" class="grid">
+      <div class="span-6">
+        <h2 class="section-title">Quickstart</h2>
+        <div class="card">
+          <div class="row">
+            <strong>Latest news (page 1)</strong>
+            <button class="btn" data-copy="#curl1">Copy</button>
+          </div>
+<pre><code id="curl1">curl -fsS "https://api.fluxfeed.news/v1/news?page=1&amp;page_size=3" | jq</code></pre>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="row">
+            <strong>Trending mentions (7d)</strong>
+            <button class="btn" data-copy="#curl2">Copy</button>
+          </div>
+<pre><code id="curl2">curl -fsS "https://api.fluxfeed.news/v1/trending/top-mentioned?last_days=7&amp;limit=25" | jq</code></pre>
+        </div>
+      </div>
+
+      <div class="span-6">
+        <h2 class="section-title">Client examples</h2>
+        <div class="card">
+          <div class="row">
+            <strong>JavaScript (fetch)</strong>
+            <button class="btn" data-copy="#js1">Copy</button>
+          </div>
+<pre><code id="js1">const base = "https://api.fluxfeed.news";
+const res = await fetch(`${base}/v1/news?page=1&amp;page_size=3`);
+const json = await res.json();
+console.log(json.items.map(i =&gt; ({ id: i.id, title: i.title, source: i.source })));
+// CORS is enabled for https://docs.fluxfeed.news</code></pre>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="row">
+            <strong>Python (requests)</strong>
+            <button class="btn" data-copy="#py1">Copy</button>
+          </div>
+<pre><code id="py1">import requests
+base = "https://api.fluxfeed.news"
+r = requests.get(f"{base}/v1/trending/headlines", params={"limit": 10, "last_hours": 24})
+r.raise_for_status()
+for item in r.json()["items"]:
+    print(item["title"], item["tickers"])</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="endpoints" class="section-title">Endpoints</section>
+    <div class="redoc-wrap">
+      <!-- Redoc renders the live spec -->
+      <div id="redoc-container" style="min-height: 70vh;"></div>
+    </div>
+
+    <footer>
+      <p>© <span id="yr"></span> Fluxfeed — <a href="https://fluxfeed.news" target="_blank" rel="noopener">fluxfeed.news</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // Render Redoc once script is loaded
+    window.addEventListener('load', () => {
+      const specUrl = 'https://api.fluxfeed.news/openapi.json';
+      Redoc.init(specUrl, {
+        theme: {
+          colors: { primary: { main: '#ff7a00' } },
+          typography: { fontSize: '14px', fontFamily: 'Inter, system-ui, sans-serif' }
+        },
+        hideDownloadButton: false,
+        expandResponses: "200"
+      }, document.getElementById('redoc-container'));
+    });
+
+    // Copy buttons
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-copy]');
+      if (!btn) return;
+      const sel = btn.getAttribute('data-copy');
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const txt = el.textContent;
+      navigator.clipboard.writeText(txt).then(() => {
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => (btn.textContent = old), 1000);
+      });
+    });
+
+    // Health widget
+    async function pingHealth() {
+      const pill = document.getElementById('health-pill');
+      const when = document.getElementById('health-time');
+      try {
+        const r = await fetch('https://api.fluxfeed.news/health', { cache: 'no-store' });
+        const j = await r.json();
+        if (j.ok) {
+          pill.classList.add('ok'); pill.classList.remove('bad');
+          pill.textContent = 'Operational';
+          when.textContent = new Date(j.time).toLocaleString();
+        } else {
+          throw new Error('Not ok');
+        }
+      } catch {
+        pill.classList.add('bad'); pill.classList.remove('ok');
+        pill.textContent = 'Degraded';
+        when.textContent = 'Unable to reach /health';
+      }
+    }
+    pingHealth();
+    setInterval(pingHealth, 30000);
+
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
