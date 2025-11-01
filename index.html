@@ -2,207 +2,619 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Fluxfeed API Docs</title>
+  <title>Fluxfeed API Documentation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Fluxfeed API documentation and quickstart guide." />
   <meta name="theme-color" content="#ff7a00" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' fill='%230a0a0b'/%3E%3Cpath d='M28 96 L64 24 L100 96 Z' fill='%23ff7a00'/%3E%3C/svg%3E" />
+  <link rel="icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0c0f;
-      --panel: #101218;
-      --text: #e9edf1;
-      --muted: #99a2ad;
+      --bg: #0a0b0f;
+      --surface: #13151a;
+      --surface-hover: #1a1d24;
+      --border: #1f2329;
+      --border-light: #2a2e36;
+      --text: #f1f3f5;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
       --accent: #ff7a00;
-      --ok: #3ecf8e;
-      --bad: #ff5577;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --accent-hover: #ff9533;
+      --accent-light: rgba(255, 122, 0, 0.1);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.1);
+      --error: #ef4444;
+      --error-light: rgba(239, 68, 68, 0.1);
+      --code-bg: #0d0e12;
+      --mono: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
     }
-    * { box-sizing: border-box; }
-    html, body { margin:0; height:100%; }
-    body { background: var(--bg); color: var(--text); font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
-    header { display:flex; gap:16px; align-items:center; padding: 24px 0; }
-    .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display:inline-block; }
-    nav { margin-left:auto; display:flex; gap:18px; }
-    nav a { color: var(--text); opacity: .9; }
-    .hero { background: linear-gradient(180deg, rgba(255,122,0,0.07), transparent 50%); border:1px solid #1a1f29; padding: 28px; border-radius: 16px; }
-    h1 { font-size: 28px; margin: 0 0 8px; }
-    .muted { color: var(--muted); }
-    .grid { display:grid; gap:18px; grid-template-columns: repeat(12, 1fr); margin-top: 24px; }
-    .card { background: var(--panel); border:1px solid #1a1f29; border-radius: 16px; padding: 18px; }
-    .span-4 { grid-column: span 4; }
-    .span-6 { grid-column: span 6; }
-    .span-8 { grid-column: span 8; }
-    .kbd { font: 12px/1 var(--mono); background:#0d0f14; border:1px solid #1a1f29; padding:2px 6px; border-radius:6px; color:var(--muted); }
-    pre { margin:12px 0 0; background:#0b0e14; border:1px solid #1a1f29; border-radius: 14px; padding: 14px; overflow:auto; }
-    code { font-family: var(--mono); font-size: 13px; }
-    .row { display:flex; align-items:center; justify-content:space-between; gap: 12px; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:1px solid #1f2633; background:#0f131b; color:var(--text); cursor:pointer; }
-    .btn:hover { background:#141a25; }
-    .pill { padding:4px 10px; border-radius:999px; font-size:12px; border:1px solid #1f2633; }
-    .pill.ok { color:#0c2; background:rgba(62,207,142,.1); border-color:rgba(62,207,142,.4); }
-    .pill.bad { color:#f36; background:rgba(255,85,119,.1); border-color:rgba(255,85,119,.35); }
-    .section-title { margin: 26px 0 10px; font-size: 20px; }
-    footer { color: var(--muted); padding: 28px 0; text-align:center; }
-    .redoc-wrap { background: #090b10; border:1px solid #141924; border-radius:16px; padding: 0; overflow:hidden; }
-    iframe { width:100%; border:0; }
-    .note { font-size: 13px; color: var(--muted); }
-    @media (max-width: 900px) {
-      .span-4, .span-6, .span-8 { grid-column: 1 / -1; }
-      nav { display:none; }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body { 
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 11, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 64px;
+      gap: 32px;
+    }
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+    }
+    
+    .brand {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    nav {
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+    }
+    
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    nav a:hover {
+      color: var(--accent);
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-description {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    
+    .info-card:hover {
+      border-color: var(--border-light);
+      background: var(--surface-hover);
+    }
+    
+    .info-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    
+    .info-value {
+      font-size: 14px;
+      color: var(--text);
+      font-family: var(--mono);
+      background: var(--code-bg);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      display: inline-block;
+    }
+    
+    .info-value a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .info-value a:hover {
+      text-decoration: underline;
+    }
+    
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .status-pill.ok {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    
+    .status-pill.error {
+      background: var(--error-light);
+      color: var(--error);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .info-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    
+    /* Section */
+    .section {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: var(--text);
+    }
+    
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: -24px;
+      margin-bottom: 32px;
+    }
+    
+    /* Code Cards */
+    .code-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 24px;
+    }
+    
+    .code-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .code-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .copy-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    pre {
+      margin: 0;
+      padding: 20px;
+      background: var(--code-bg);
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    
+    code {
+      font-family: var(--mono);
+      color: #e5e7eb;
+    }
+    
+    /* Syntax highlighting */
+    .token.string { color: #a5d6ff; }
+    .token.comment { color: #6b7280; font-style: italic; }
+    .token.keyword { color: #ff7b72; }
+    .token.function { color: #d2a8ff; }
+    .token.number { color: #79c0ff; }
+    
+    /* Redoc Container */
+    .redoc-container {
+      margin-top: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 600px;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+      
+      .hero-description {
+        font-size: 16px;
+      }
+      
+      .code-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      nav {
+        display: none;
+      }
+      
+      .section {
+        padding: 40px 0;
+      }
+      
+      .hero {
+        padding: 60px 0 40px;
+      }
     }
   </style>
   <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <span class="logo"></span>
-      <strong>Fluxfeed API</strong>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/logo.png" alt="Fluxfeed" class="logo" />
+        <span class="brand">Fluxfeed API</span>
+      </div>
       <nav>
         <a href="#overview">Overview</a>
         <a href="#quickstart">Quickstart</a>
-        <a href="#endpoints">Endpoints</a>
-        <a href="#status">Status</a>
+        <a href="#endpoints">Reference</a>
+        <a href="https://fluxfeed.news" target="_blank">Dashboard</a>
       </nav>
-    </header>
-
-    <section class="hero" id="overview">
-      <h1>Crypto news & signals API</h1>
-      <p class="muted">Fast endpoints for live crypto headlines, trending mentions, tickers and more — powering <span class="kbd">fluxfeed.news</span>.</p>
-      <div class="grid">
-        <div class="card span-4">
-          <div class="row"><strong>Base URL</strong><span class="kbd">https://api.fluxfeed.news</span></div>
-          <div class="note" style="margin-top:8px">Public endpoints. No auth required (rate-limited).</div>
-        </div>
-        <div class="card span-4">
-          <div class="row"><strong>Spec</strong><a class="kbd" href="https://api.fluxfeed.news/openapi.json" target="_blank" rel="noopener">openapi.json</a></div>
-          <div class="note" style="margin-top:8px">This page renders the spec below via Redoc.</div>
-        </div>
-        <div class="card span-4" id="status">
-          <div class="row"><strong>Status</strong><span id="health-pill" class="pill">Checking…</span></div>
-          <div class="note" id="health-time" style="margin-top:8px">—</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="quickstart" class="grid">
-      <div class="span-6">
-        <h2 class="section-title">Quickstart</h2>
-        <div class="card">
-          <div class="row">
-            <strong>Latest news (page 1)</strong>
-            <button class="btn" data-copy="#curl1">Copy</button>
-          </div>
-<pre><code id="curl1">curl -fsS "https://api.fluxfeed.news/v1/news?page=1&amp;page_size=3" | jq</code></pre>
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <div class="row">
-            <strong>Trending mentions (7d)</strong>
-            <button class="btn" data-copy="#curl2">Copy</button>
-          </div>
-<pre><code id="curl2">curl -fsS "https://api.fluxfeed.news/v1/trending/top-mentioned?last_days=7&amp;limit=25" | jq</code></pre>
-        </div>
-      </div>
-
-      <div class="span-6">
-        <h2 class="section-title">Client examples</h2>
-        <div class="card">
-          <div class="row">
-            <strong>JavaScript (fetch)</strong>
-            <button class="btn" data-copy="#js1">Copy</button>
-          </div>
-<pre><code id="js1">const base = "https://api.fluxfeed.news";
-const res = await fetch(`${base}/v1/news?page=1&amp;page_size=3`);
-const json = await res.json();
-console.log(json.items.map(i =&gt; ({ id: i.id, title: i.title, source: i.source })));
-// CORS is enabled for https://docs.fluxfeed.news</code></pre>
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <div class="row">
-            <strong>Python (requests)</strong>
-            <button class="btn" data-copy="#py1">Copy</button>
-          </div>
-<pre><code id="py1">import requests
-base = "https://api.fluxfeed.news"
-r = requests.get(f"{base}/v1/trending/headlines", params={"limit": 10, "last_hours": 24})
-r.raise_for_status()
-for item in r.json()["items"]:
-    print(item["title"], item["tickers"])</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section id="endpoints" class="section-title">Endpoints</section>
-    <div class="redoc-wrap">
-      <!-- Redoc renders the live spec -->
-      <div id="redoc-container" style="min-height: 70vh;"></div>
     </div>
+  </header>
 
-    <footer>
-      <p>© <span id="yr"></span> Fluxfeed — <a href="https://fluxfeed.news" target="_blank" rel="noopener">fluxfeed.news</a></p>
-    </footer>
-  </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>API Documentation</h1>
+      <p class="hero-description">
+        RESTful API for real-time crypto news, sentiment analysis, and trading signals. 
+        Fast, reliable, and built for developers.
+      </p>
+      
+      <div class="info-grid" id="overview">
+        <div class="info-card">
+          <div class="info-label">Base URL</div>
+          <div class="info-value">https://api.fluxfeed.news</div>
+          <div class="info-note">Public endpoints, rate-limited</div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-label">OpenAPI Spec</div>
+          <div class="info-value">
+            <a href="https://api.fluxfeed.news/openapi.json" target="_blank">openapi.json</a>
+          </div>
+          <div class="info-note">Version 1.0.0</div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-label">API Status</div>
+          <div id="status-container">
+            <span id="health-pill" class="status-pill">
+              <span class="status-dot"></span>
+              Checking...
+            </span>
+          </div>
+          <div class="info-note" id="health-time">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quickstart -->
+  <section class="section" id="quickstart">
+    <div class="container">
+      <h2 class="section-title">Quickstart</h2>
+      <p class="section-subtitle">Get started with the Fluxfeed API in seconds</p>
+      
+      <div class="code-grid">
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-title">Get Latest News</span>
+            <button class="copy-btn" data-copy="#curl1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code id="curl1">curl "https://api.fluxfeed.news/v1/news?page=1&amp;page_size=5"</code></pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-title">Trending Mentions (7 days)</span>
+            <button class="copy-btn" data-copy="#curl2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code id="curl2">curl "https://api.fluxfeed.news/v1/trending/top-mentioned?last_days=7&amp;limit=10"</code></pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-title">JavaScript (Fetch API)</span>
+            <button class="copy-btn" data-copy="#js1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code id="js1">const response = await fetch(
+  'https://api.fluxfeed.news/v1/news?page=1&amp;page_size=5'
+);
+const data = await response.json();
+console.log(data.items);</code></pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-title">Python (requests)</span>
+            <button class="copy-btn" data-copy="#py1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code id="py1">import requests
+
+r = requests.get(
+    'https://api.fluxfeed.news/v1/trending/headlines',
+    params={'limit': 10, 'last_hours': 24}
+)
+data = r.json()
+for item in data['items']:
+    print(item['title'])</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Reference -->
+  <section class="section" id="endpoints">
+    <div class="container">
+      <h2 class="section-title">API Reference</h2>
+      <p class="section-subtitle">Complete endpoint documentation powered by OpenAPI</p>
+      
+      <div class="redoc-container">
+        <div id="redoc-root"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> Fluxfeed · <a href="https://fluxfeed.news" target="_blank">fluxfeed.news</a> · <a href="https://api.fluxfeed.news/openapi.json" target="_blank">OpenAPI Spec</a></p>
+    </div>
+  </footer>
 
   <script>
-    // Render Redoc once script is loaded
+    // Initialize Redoc
     window.addEventListener('load', () => {
       const specUrl = 'https://api.fluxfeed.news/openapi.json';
       Redoc.init(specUrl, {
         theme: {
-          colors: { primary: { main: '#ff7a00' } },
-          typography: { fontSize: '14px', fontFamily: 'Inter, system-ui, sans-serif' }
+          colors: { 
+            primary: { main: '#ff7a00' },
+            success: { main: '#10b981' },
+            error: { main: '#ef4444' }
+          },
+          typography: { 
+            fontSize: '14px',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            code: { fontSize: '13px', fontFamily: 'JetBrains Mono, Fira Code, monospace' }
+          },
+          sidebar: {
+            backgroundColor: '#13151a',
+            textColor: '#f1f3f5'
+          },
+          rightPanel: {
+            backgroundColor: '#0d0e12'
+          }
         },
         hideDownloadButton: false,
-        expandResponses: "200"
-      }, document.getElementById('redoc-container'));
+        expandResponses: "200,201",
+        jsonSampleExpandLevel: 2,
+        sortPropsAlphabetically: true,
+        menuToggle: true,
+        scrollYOffset: 64
+      }, document.getElementById('redoc-root'));
     });
 
-    // Copy buttons
+    // Copy to clipboard
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-copy]');
       if (!btn) return;
-      const sel = btn.getAttribute('data-copy');
-      const el = document.querySelector(sel);
+      
+      const targetId = btn.getAttribute('data-copy');
+      const el = document.querySelector(targetId);
       if (!el) return;
-      const txt = el.textContent;
-      navigator.clipboard.writeText(txt).then(() => {
-        const old = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => (btn.textContent = old), 1000);
+      
+      const text = el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Copied!
+        `;
+        btn.style.color = 'var(--success)';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.color = '';
+        }, 2000);
       });
     });
 
-    // Health widget
-    async function pingHealth() {
+    // Health check
+    async function checkHealth() {
       const pill = document.getElementById('health-pill');
-      const when = document.getElementById('health-time');
+      const time = document.getElementById('health-time');
+      
       try {
-        const r = await fetch('https://api.fluxfeed.news/health', { cache: 'no-store' });
-        const j = await r.json();
-        if (j.ok) {
-          pill.classList.add('ok'); pill.classList.remove('bad');
-          pill.textContent = 'Operational';
-          when.textContent = new Date(j.time).toLocaleString();
+        const response = await fetch('https://api.fluxfeed.news/health', { 
+          cache: 'no-store' 
+        });
+        const data = await response.json();
+        
+        if (data.ok) {
+          pill.className = 'status-pill ok';
+          pill.innerHTML = '<span class="status-dot"></span> Operational';
+          time.textContent = new Date(data.time).toLocaleString();
         } else {
-          throw new Error('Not ok');
+          throw new Error('Not OK');
         }
-      } catch {
-        pill.classList.add('bad'); pill.classList.remove('ok');
-        pill.textContent = 'Degraded';
-        when.textContent = 'Unable to reach /health';
+      } catch (error) {
+        pill.className = 'status-pill error';
+        pill.innerHTML = '<span class="status-dot"></span> Degraded';
+        time.textContent = 'Unable to reach API';
       }
     }
-    pingHealth();
-    setInterval(pingHealth, 30000);
 
-    // Year
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    // Initial check and periodic updates
+    checkHealth();
+    setInterval(checkHealth, 30000);
+
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
