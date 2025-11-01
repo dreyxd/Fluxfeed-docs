@@ -1,6 +1,15 @@
 {
   "headers": [
     {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=60" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer-when-downgrade" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
@@ -11,10 +20,5 @@
   ],
   "redirects": [
     { "source": "/openapi", "destination": "https://api.fluxfeed.news/openapi.json", "permanent": false }
-  ],
-  "cache": {
-    "rules": [
-      { "source": "/", "headers": { "cache-control": "public, max-age=60" } }
-    ]
-  }
+  ]
 }
