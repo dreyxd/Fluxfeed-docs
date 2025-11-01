@@ -370,6 +370,85 @@
         padding: 60px 0 40px;
       }
     }
+    
+    /* Redoc Custom Overrides for Better Contrast */
+    .redoc-wrap {
+      background: var(--bg) !important;
+    }
+    
+    /* Sidebar text improvements */
+    [role="navigation"] {
+      background: var(--bg) !important;
+    }
+    
+    [role="navigation"] li > label,
+    [role="navigation"] li > a {
+      color: #d1d5db !important;
+    }
+    
+    [role="navigation"] li.active > label,
+    [role="navigation"] li.active > a {
+      color: var(--accent) !important;
+      background: var(--surface) !important;
+    }
+    
+    [role="navigation"] li:hover > label,
+    [role="navigation"] li:hover > a {
+      color: var(--text) !important;
+      background: var(--surface) !important;
+    }
+    
+    /* Main content text improvements */
+    .redoc-wrap h1,
+    .redoc-wrap h2,
+    .redoc-wrap h3,
+    .redoc-wrap h4,
+    .redoc-wrap h5 {
+      color: var(--text) !important;
+    }
+    
+    .redoc-wrap p,
+    .redoc-wrap li,
+    .redoc-wrap td,
+    .redoc-wrap span {
+      color: #d1d5db !important;
+    }
+    
+    /* Code blocks */
+    .redoc-wrap pre,
+    .redoc-wrap code {
+      background: var(--code-bg) !important;
+      color: #f1f3f5 !important;
+    }
+    
+    /* Tables and schemas */
+    .redoc-wrap table {
+      background: var(--surface) !important;
+    }
+    
+    .redoc-wrap th {
+      color: var(--text) !important;
+      background: var(--code-bg) !important;
+    }
+    
+    /* Property names in schemas */
+    .redoc-wrap .property-name {
+      color: #60a5fa !important;
+    }
+    
+    /* Type badges */
+    .redoc-wrap .type-name {
+      color: #34d399 !important;
+    }
+    
+    /* Links */
+    .redoc-wrap a {
+      color: var(--accent) !important;
+    }
+    
+    .redoc-wrap a:hover {
+      color: var(--accent-hover) !important;
+    }
   </style>
   <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js" defer></script>
 </head>
@@ -534,18 +613,53 @@ for item in data['items']:
           colors: { 
             primary: { main: '#ff7a00' },
             success: { main: '#10b981' },
-            error: { main: '#ef4444' }
+            error: { main: '#ef4444' },
+            text: {
+              primary: '#f1f3f5',
+              secondary: '#d1d5db'
+            },
+            http: {
+              get: '#10b981',
+              post: '#3b82f6',
+              put: '#f59e0b',
+              delete: '#ef4444'
+            }
           },
           typography: { 
-            fontSize: '14px',
+            fontSize: '15px',
+            lineHeight: '1.7',
             fontFamily: 'Inter, system-ui, sans-serif',
-            code: { fontSize: '13px', fontFamily: 'JetBrains Mono, Fira Code, monospace' }
+            headings: {
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontWeight: '600'
+            },
+            code: { 
+              fontSize: '14px',
+              fontFamily: 'JetBrains Mono, Fira Code, Consolas, monospace',
+              backgroundColor: '#0d0e12',
+              color: '#f1f3f5'
+            }
           },
           sidebar: {
-            backgroundColor: '#13151a',
-            textColor: '#f1f3f5'
+            backgroundColor: '#0a0b0f',
+            textColor: '#f1f3f5',
+            activeTextColor: '#ff7a00',
+            groupItems: {
+              activeBackgroundColor: '#1a1d24',
+              activeTextColor: '#ff7a00',
+              textTransform: 'none'
+            },
+            level1Items: {
+              activeBackgroundColor: '#13151a',
+              activeTextColor: '#ff7a00',
+              textTransform: 'none'
+            }
           },
           rightPanel: {
+            backgroundColor: '#0d0e12',
+            textColor: '#d1d5db'
+          },
+          codeBlock: {
             backgroundColor: '#0d0e12'
           }
         },
@@ -554,7 +668,10 @@ for item in data['items']:
         jsonSampleExpandLevel: 2,
         sortPropsAlphabetically: true,
         menuToggle: true,
-        scrollYOffset: 64
+        scrollYOffset: 64,
+        nativeScrollbars: false,
+        disableSearch: false,
+        pathInMiddlePanel: true
       }, document.getElementById('redoc-root'));
     });
 
